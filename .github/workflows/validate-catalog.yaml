@@ -4,9 +4,6 @@ on:
   pull_request:
     branches:
       - main
-  pull_request_target:
-    branches:
-      - main
   push:
     branches:
       - main
@@ -28,10 +25,10 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: bash -l {0}
+        shell: bash -l
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5.1.0
         with:
           python-version: "3.12"
       - name: validate feedstock entry and generate catalog
@@ -45,60 +42,43 @@ jobs:
           cat output/single-feedstock-web-catalog.json | jq
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.1.0
         with:
           name: single-feedstock-web-catalog.json
           path: output/single-feedstock-web-catalog.json
 
   update:
     needs: validate-and-generate
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: bash -l {0}
-
+        shell: bash -l
     environment:
-      name: ${{ github.event.pull_request.number }}
-      url: ${{ format('https://catalog.leap.columbia.edu/?catalog=https://raw.githubusercontent.com/{0}/{1}/output/single-feedstock-web-catalog.json', github.event.pull_request.head.repo.full_name, github.head_ref) }}
+      name: update-environment
+      url: https://catalog.leap.columbia.edu/?catalog=https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref }}/output/single-feedstock-web-catalog.json
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
-          # ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Pull Remote Changes
         run: |
-          git pull origin ${{ github.event.pull_request.head.ref }} --rebase --autostash
+          git pull origin ${{ github.ref }} --rebase --autostash
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4.1.0
         with:
           name: single-feedstock-web-catalog.json
           path: output
 
-      - name: Commit and Push
+      - name: Format JSON
         run: |
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git add output/single-feedstock-web-catalog.json
-          git add output/single-feedstock-web-catalog.json
-          git commit -m "Auto-update single-feedstock-web-catalog.json"
-
-      - name: Push changes
-        if: github.event_name == 'pull_request'
-        uses: ad-m/github-push-action@master
-        with:
-          # ssh: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          branch: ${{ github.event.pull_request.head.ref }}
+          jq . output/single-feedstock-web-catalog.json > formatted.json
+          mv formatted.json output/single-feedstock-web-catalog.json
 
       - name: Create Pull Request
         id: cpr
-        if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch') && github.ref == 'refs/heads/main'
-        uses: peter-evans/create-pull-request@v7
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+        uses: peter-evans/create-pull-request@v7.1.0
         with:
           commit-message: "build: update catalog entry"
           committer: GitHub <noreply@github.com>
