@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: bash -l
+        shell: bash -l {0}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5.1.0
@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: bash -l
+        shell: bash -l {0}
     environment:
       name: update-environment
       url: https://catalog.leap.columbia.edu/?catalog=https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref }}/output/single-feedstock-web-catalog.json
