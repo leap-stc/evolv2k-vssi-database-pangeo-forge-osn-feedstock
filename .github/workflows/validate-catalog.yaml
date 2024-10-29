@@ -54,8 +54,8 @@ jobs:
       run:
         shell: bash -l {0}
     environment:
-      name: ${{ github.ref }}
-      url: https://catalog.leap.columbia.edu/?catalog=https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref }}/output/single-feedstock-web-catalog.json
+      name: ${{ github.head_ref }}
+      url: https://catalog.leap.columbia.edu/?catalog=https://raw.githubusercontent.com/${{ github.repository }}/${{ github.head_ref }}/output/single-feedstock-web-catalog.json
     steps:
       - uses: actions/checkout@v4
         with:
@@ -74,6 +74,15 @@ jobs:
         run: |
           jq . output/single-feedstock-web-catalog.json > formatted.json
           mv formatted.json output/single-feedstock-web-catalog.json
+          cat output/single-feedstock-web-catalog.json | jq
+
+      - name: Push changes
+        if: github.event_name == 'pull_request'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          branch: ${{ github.event.pull_request.head.ref }}
 
       - name: Create Pull Request
         id: cpr
