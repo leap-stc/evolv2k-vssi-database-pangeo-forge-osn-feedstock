@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - main
+  pull_request_target:
+    branches:
+      - main
   push:
     branches:
       - main
@@ -79,13 +82,9 @@ jobs:
         run: |
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          python -m pip install pre-commit
-          pre-commit install
           git add output/single-feedstock-web-catalog.json
-          # run pre-commit and return 0 to avoid failing the job
-          pre-commit run || true
-          git add output/single-feedstock-web-catalog.json || true
-          git commit -m "Auto-update single-feedstock-web-catalog.json" || true
+          git add output/single-feedstock-web-catalog.json
+          git commit -m "Auto-update single-feedstock-web-catalog.json"
 
       - name: Push changes
         if: github.event_name == 'pull_request'
