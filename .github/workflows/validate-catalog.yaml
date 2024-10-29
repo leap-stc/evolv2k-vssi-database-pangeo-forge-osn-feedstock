@@ -72,7 +72,7 @@ jobs:
 
       - name: Format JSON
         run: |
-          jq . output/single-feedstock-web-catalog.json > formatted.json
+          jq -r '.' output/single-feedstock-web-catalog.json | sed '$s/^$//;/^$/d' > formatted.json
           mv formatted.json output/single-feedstock-web-catalog.json
           cat output/single-feedstock-web-catalog.json | jq
 
