@@ -37,8 +37,10 @@ jobs:
           generation-single: "./feedstock/catalog.yaml"
           output-directory: "./"
 
-      - name: display catalog
+      - name: Format JSON
         run: |
+          jq -r '.' output/single-feedstock-web-catalog.json | sed '$s/^$//;/^$/d' > formatted.json
+          mv formatted.json output/single-feedstock-web-catalog.json
           cat output/single-feedstock-web-catalog.json | jq
 
       - name: Upload artifacts
@@ -69,12 +71,6 @@ jobs:
         with:
           name: single-feedstock-web-catalog.json
           path: output
-
-      - name: Format JSON
-        run: |
-          jq -r '.' output/single-feedstock-web-catalog.json | sed '$s/^$//;/^$/d' > formatted.json
-          mv formatted.json output/single-feedstock-web-catalog.json
-          cat output/single-feedstock-web-catalog.json | jq
 
       - name: Commit and Push
         run: |
