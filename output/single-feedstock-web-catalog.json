@@ -1,0 +1,59 @@
+[
+  {
+    "description": "eVolv2k includes estimates of the magnitudes and approximate source latitudes of major volcanic stratospheric sulfur injection (VSSI) events from 500BCE to 1900CE.",
+    "links": null,
+    "maintainers": [
+      {
+        "github": "jordanplanders",
+        "name": "Jordan Landers"
+      }
+    ],
+    "ncviewjs:meta_yaml_url": "https://github.com/pangeo-forge/eVolv2k-feedstock/blob/main/feedstock/meta.yaml",
+    "provenance": {
+      "license": "CC-BY-4.0",
+      "license_link": null,
+      "providers": [
+        {
+          "description": null,
+          "name": "Matthew Toohey",
+          "roles": [
+            "producer"
+          ],
+          "url": "https://artsandscience.usask.ca/profile/MToohey#ResearchAreas"
+        },
+        {
+          "description": "World Data Center for Climate",
+          "name": "WDCC",
+          "roles": [
+            "curator",
+            "licensor"
+          ],
+          "url": "https://www.wdc-climate.de/ui/entry?acronym=eVolv2k_v3"
+        }
+      ]
+    },
+    "stores": [
+      {
+        "geospatial": false,
+        "id": "eVolv2k",
+        "last_updated": null,
+        "name": "eVolv2k",
+        "ncviewjs:rechunking": null,
+        "public": true,
+        "url": "https://ncsa.osn.xsede.org/Pangeo/pangeo-forge/pangeo-forge/eVolv2k-feedstock/eVolv2k.zarr",
+        "xarray_open_kwargs": {
+          "engine": "zarr"
+        }
+      }
+    ],
+    "tags": [
+      "zarr",
+      "pangeo-forge",
+      "open-storage-network",
+      "osn",
+      "volcanology"
+    ],
+    "thumbnail": null,
+    "title": "eVolv2k VSSI database"
+  }
+]
