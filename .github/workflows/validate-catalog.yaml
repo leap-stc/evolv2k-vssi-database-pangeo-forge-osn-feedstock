@@ -76,6 +76,13 @@ jobs:
           mv formatted.json output/single-feedstock-web-catalog.json
           cat output/single-feedstock-web-catalog.json | jq
 
+      - name: Commit and Push
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add output/single-feedstock-web-catalog.json
+          git commit -m "Auto-update single-feedstock-web-catalog.json"
+
       - name: Push changes
         if: github.event_name == 'pull_request'
         uses: ad-m/github-push-action@master
