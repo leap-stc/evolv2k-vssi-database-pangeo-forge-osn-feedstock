@@ -69,9 +69,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Pull Remote Changes
-        run: |
-          git pull origin ${{ github.ref }} --rebase --autostash
+      # - name: Pull Remote Changes
+      #   run: |
+      #     git pull origin ${{ github.ref }} --rebase --autostash
 
       - uses: actions/download-artifact@v4
         with:
@@ -112,6 +112,7 @@ jobs:
             [1]: https://github.com/peter-evans/create-pull-request
           branch: update-single-feedstock-web-catalog
           delete-branch: true
+
   create-or-update-issue:
     needs: validate-and-generate
     if: failure() && github.event_name == 'schedule'
