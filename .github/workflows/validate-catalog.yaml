@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  run-catalog-entry:
+  single-feedstock:
     uses: leap-stc/data-catalog-actions/.github/workflows/reusable-catalog-entry.yml@main
     with:
       python-version: "3.12"
