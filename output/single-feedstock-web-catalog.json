@@ -45,7 +45,7 @@
         "id": "eVolv2k",
         "name": "eVolv2k",
         "url": "https://ncsa.osn.xsede.org/Pangeo/pangeo-forge/pangeo-forge/eVolv2k-feedstock/eVolv2k.zarr",
-        "ncviewjs:rechunking": null,
+        "rechunking": null,
         "public": true,
         "geospatial": false,
         "xarray_open_kwargs": {
