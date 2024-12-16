@@ -1,4 +1,4 @@
-name: catalog-entry
+name: leap-catalog
 
 on:
   pull_request:
